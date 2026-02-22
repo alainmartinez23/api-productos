@@ -1,3 +1,8 @@
+/**
+ * Middleware simple de validación para que todas las peticiones
+ * cumplan con los esquemas de ZOD que he establecido en las routes.
+ */
+
 export const validarSchema = (schema, property = "body") => {
     return (req, res, next) => {
         const resultado = schema.safeParse(req[property])

@@ -3,8 +3,14 @@ import { crearProducto, eliminarProducto, listarProductoIndividual, listarProduc
 import { validarSchema } from "../middlewares/validarSchema.js"
 import { crearProductoSchema, modificarProductoSchema } from "../schemas/productoSchema.js"
 
-// Falta crear todos los middlewares!!!!! 
-// Esto es un testeo mínimo
+/**
+ * Routes con todos los middlewares correspondientes
+ * 
+ * Como posibles mejoras, se podrían hacer lo siguiente:
+ * - middleware de Rate Limiting
+ * - middleware para comprobar que ID sea correcto
+ * - ...
+ */
 
 const router = Router()
 

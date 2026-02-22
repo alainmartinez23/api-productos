@@ -5,11 +5,24 @@ export class ProductoService {
         this.repo = repositorio
     }
 
-    // Aquí meteré toda la lógica de caché
+    /**
+     * En esta parte del código aplico toda la lógica de caché
+     * 
+     * El patrón de caché que elijo es el caché-aside, que consiste en lo siguiente:
+     * cuando recibo una petición de tipo GET, busco en caché, y si está en caché devuelvo
+     * resultado. Si no está en caché, llamo a la base de datos, obtengo resultado, lo añado
+     * a caché y devuelvo resultado al cliente.
+     * 
+     * En el resto de requests (POST, PUT, DELETE) tengo que hacer invalidaciones de caché
+     */
 
     async crearProducto(nuevo) {
         if (!nuevo) {return}
 
+        /**
+         * Si creo producto, invalido caché. Así la siguiente petición tendrá que ir a DB
+         * y recuperará todos los productos, incluido el nuevo
+         */
         const key = "productos:list"
         await redis.del(key)
 
@@ -19,6 +32,7 @@ export class ProductoService {
     async listarProductos(params = {}) {
         const { skip = 0, take = 10, orderByPrecio } = params
 
+        // Aquí tengo que tener en cuenta los filtros también.
         const key = `productos:list:skip=${skip}:limit=${take}:order=${orderByPrecio || "default"}`
 
         const productos = await redis.get(key)
@@ -57,6 +71,7 @@ export class ProductoService {
         const actualizado =  await this.repo.modificarProducto(id, modificado)
         if (!actualizado) return null 
 
+        // Invalidar tanto el producto individual como la lista entera
         await redis.del(`productos:${id}`)
         await redis.del("productos:list")
 
@@ -68,6 +83,7 @@ export class ProductoService {
         
         if (!eliminado) return null;
 
+        // Invalidar tanto el producto individual como la lista entera
         await redis.del(`productos:${id}`)
         await redis.del("productos:list")
 

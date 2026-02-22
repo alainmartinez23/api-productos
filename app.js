@@ -9,12 +9,18 @@ import { apiKeyMiddleware } from "./middlewares/apiKey.js";
 
 const app = express()
 
+
 app.use(loggerMiddleware)
+
+// Helmet introduce una serie de headers para mayor seguridad
 app.use(helmet())
 app.use(express.json())
+
+// Request de prueba. También le puedo llamar /health, que suele ser lo normal
 app.use("/prueba", (req, res) => {
     res.status(200).json("OK")
 })
+
 app.use(apiKeyMiddleware)
 app.use("/", routerProductos)
 app.use(errorHandler)
