@@ -14,14 +14,14 @@ const { Pool } = pg
  * RDS PostgreSQL (PostgreSQL gestionado por AWS).
  * 
  * En caso de querer probar la API en local con PostgreSQL en local,
- * se puede quitar el parámetro SSL sin ningún problema
+ * se puede quitar el parámetro SSL sin ningún problema. En producción, añadirlo.
  */
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     // OPCIONAL --> leer explicación de arriba
-    ssl: {
-        rejectUnauthorized: false
-    }
+    // ssl: {
+    //     rejectUnauthorized: false
+    // }
 })
 
 const adapter = new PrismaPg(pool)

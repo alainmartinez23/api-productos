@@ -12,9 +12,9 @@ import { createClient } from "redis";
 export const redis = createClient({
   url: process.env.REDIS_URL,
   // Este parámetro es opcional --> leer la explicación de arriba
-  socket: {
-    tls: true
-  }
+  // socket: {
+  //   tls: true
+  // }
 });
 
 redis.on("error", (err) => console.error("Redis error", err));
